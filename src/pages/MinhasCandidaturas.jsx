@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { ChevronLeft, ChevronRight, Building2 } from 'lucide-react'
 import BottomNav from '../components/BottomNav'
 import { statusLabel } from '../data/candidaturas'
+import { vagas } from '../data/vagas'
 
 const TABS = [
   { key: 'todas',       label: 'Todas' },
@@ -13,6 +14,11 @@ const TABS = [
 
 export default function MinhasCandidaturas({ navigate, candidaturas }) {
   const [tab, setTab] = useState('todas')
+
+  const abrirVaga = (c) => {
+    const vaga = vagas.find(v => v.titulo === c.vagaTitulo && v.empresa === c.empresa)
+    if (vaga) navigate('detalhes', { vaga })
+  }
 
   const filtradas = tab === 'todas'
     ? candidaturas
@@ -57,11 +63,14 @@ export default function MinhasCandidaturas({ navigate, candidaturas }) {
             {filtradas.map((c, i) => (
               <div
                 key={c.id}
+                onClick={() => abrirVaga(c)}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px',
                   borderBottom: i < filtradas.length - 1 ? '1px solid #F1F5F9' : 'none',
-                  cursor: 'pointer',
+                  cursor: 'pointer', transition: 'background 0.15s',
                 }}
+                onMouseEnter={e => e.currentTarget.style.background = '#F8FAFC'}
+                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
               >
                 {/* Ícone empresa */}
                 <div style={{

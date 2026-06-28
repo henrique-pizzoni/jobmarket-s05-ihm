@@ -68,6 +68,9 @@ export default function App() {
           navigate={navigate}
           vaga={params.vaga}
           onCandidatar={handleCandidatar}
+          jaInscrito={candidaturas.some(
+            c => c.vagaTitulo === params.vaga?.titulo && c.empresa === params.vaga?.empresa
+          )}
         />
       )}
       {screen === 'candidaturas' && (

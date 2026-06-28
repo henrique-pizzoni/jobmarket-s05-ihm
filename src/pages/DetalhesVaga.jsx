@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ChevronLeft, Bookmark, BookmarkCheck, Building2, MapPin, CheckCircle2, AlertTriangle, ExternalLink, ClipboardList } from 'lucide-react'
 
-export default function DetalhesVaga({ navigate, vaga, onCandidatar }) {
+export default function DetalhesVaga({ navigate, vaga, onCandidatar, jaInscrito = false }) {
   const [tab, setTab] = useState('vaga')
   const [saved, setSaved] = useState(false)
   const [modal, setModal] = useState(null)
@@ -101,7 +101,29 @@ export default function DetalhesVaga({ navigate, vaga, onCandidatar }) {
       }}>
         <div style={{ maxWidth: 760, margin: '0 auto' }}>
           {isInterna ? (
-            <button className="btn-primary" onClick={handleCandidatar}>Candidatar-se</button>
+            jaInscrito ? (
+              <div style={{ display: 'flex', gap: 10 }}>
+                <div style={{
+                  flex: 1, padding: '14px', borderRadius: 10, background: '#D1FAE5',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                }}>
+                  <CheckCircle2 size={18} color="#065F46" />
+                  <span style={{ fontSize: 15, fontWeight: 600, color: '#065F46' }}>Inscrito</span>
+                </div>
+                <button
+                  onClick={() => navigate('candidaturas')}
+                  style={{
+                    flex: 1, padding: '14px', borderRadius: 10, border: '2px solid #1B3A6B',
+                    background: 'transparent', color: '#1B3A6B', fontSize: 15, fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  Ver candidatura
+                </button>
+              </div>
+            ) : (
+              <button className="btn-primary" onClick={handleCandidatar}>Candidatar-se</button>
+            )
           ) : (
             <button className="btn-orange" onClick={handleCandidatar}>
               Ver no site da empresa <ExternalLink size={16} />
