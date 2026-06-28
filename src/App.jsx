@@ -34,16 +34,16 @@ export default function App() {
     const jaExiste = candidaturas.some(
       c => c.vagaTitulo === vaga.titulo && c.empresa === vaga.empresa
     )
-    if (!jaExiste) {
-      setCandidaturas(prev => [{
-        id: Date.now(),
-        vagaTitulo: vaga.titulo,
-        empresa: vaga.empresa,
-        dataEnvio: new Date().toLocaleDateString('pt-BR'),
-        status: 'em_analise',
-        tipo: vaga.tipo,
-      }, ...prev])
-    }
+    if (jaExiste) return false
+    setCandidaturas(prev => [{
+      id: Date.now(),
+      vagaTitulo: vaga.titulo,
+      empresa: vaga.empresa,
+      dataEnvio: new Date().toLocaleDateString('pt-BR'),
+      status: 'em_analise',
+      tipo: vaga.tipo,
+    }, ...prev])
+    return true
   }
 
   const activeNav = screenToNav[screen] || 'home'

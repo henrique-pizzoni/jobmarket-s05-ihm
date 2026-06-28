@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronLeft, Bookmark, BookmarkCheck, Building2, MapPin, CheckCircle2, AlertTriangle, ExternalLink } from 'lucide-react'
+import { ChevronLeft, Bookmark, BookmarkCheck, Building2, MapPin, CheckCircle2, AlertTriangle, ExternalLink, ClipboardList } from 'lucide-react'
 
 export default function DetalhesVaga({ navigate, vaga, onCandidatar }) {
   const [tab, setTab] = useState('vaga')
@@ -10,12 +10,9 @@ export default function DetalhesVaga({ navigate, vaga, onCandidatar }) {
   const isInterna = vaga.tipo === 'interna'
 
   const handleCandidatar = () => {
-    if (isInterna) {
-      onCandidatar(vaga)
-      setModal('sucesso')
-    } else {
-      setModal('redir')
-    }
+    if (!isInterna) { setModal('redir'); return }
+    const nova = onCandidatar(vaga)
+    setModal(nova ? 'sucesso' : 'ja_inscrito')
   }
 
   const handleFechar = () => {
@@ -127,6 +124,29 @@ export default function DetalhesVaga({ navigate, vaga, onCandidatar }) {
               Seu currículo foi enviado para análise. Você pode acompanhar o status em Minhas Candidaturas.
             </p>
             <button className="btn-primary" onClick={handleFechar}>Fechar</button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Já inscrito */}
+      {modal === 'ja_inscrito' && (
+        <div className="overlay">
+          <div className="modal-card">
+            <div style={{ width: 70, height: 70, borderRadius: 35, background: '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}>
+              <ClipboardList size={36} color="#2563EB" />
+            </div>
+            <h2 style={{ fontSize: 18, fontWeight: 800, color: '#1E293B', marginBottom: 10 }}>
+              Você já está inscrito!
+            </h2>
+            <p style={{ fontSize: 13, color: '#64748B', lineHeight: 1.7, marginBottom: 24 }}>
+              Sua candidatura para esta vaga já foi enviada. Acompanhe o status em Minhas Candidaturas.
+            </p>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button className="btn-outline" onClick={() => setModal(null)}>Fechar</button>
+              <button className="btn-primary" style={{ flex: 1 }} onClick={() => { setModal(null); navigate('candidaturas') }}>
+                Ver candidaturas
+              </button>
+            </div>
           </div>
         </div>
       )}
